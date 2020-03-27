@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="helloService" class="com.jeff.test.HelloServiceImpl"/>
+    <bean id="helloPropertyService" class="com.jeff.test.HelloPropertyServiceImpl"
+          init-method="myInit">
+        <property name="text" value="hello world!!"/>
+    </bean>
+    <bean id="beanPostLogger" class="com.jeff.test.BeanPostLogger"/>
+</beans>
