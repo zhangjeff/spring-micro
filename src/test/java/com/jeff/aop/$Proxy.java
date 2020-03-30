@@ -1,0 +1,1 @@
+package com.jeff.aop;import com.jeff.aop.UserDao;public class $Proxy implements UserDao{private UserDao  target;public $Proxy(UserDao target) {  this.target = target;}public void query(String p) {System.out.println("log proxy2...");target.query( p);}}
