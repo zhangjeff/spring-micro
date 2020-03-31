@@ -7,3 +7,4 @@
  ### 4.支持init-method方法
  ### 5.支持单例与原型两种模式（singleton, prototype）
  ### 6.根据配置的p属性设置对应的值
+ ### 7.模仿jdk动态代理
