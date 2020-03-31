@@ -1,6 +1,6 @@
 package com.jeff.test;
 
-import com.jeff.ioc.beans.postProcessor.BeanPostProcessor;
+import com.jeff.ioc.postProcessor.BeanPostProcessor;
 
 public class BeanPostLogger implements BeanPostProcessor {
     @Override

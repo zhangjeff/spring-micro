@@ -1,7 +1,7 @@
 package com.jeff;
 
-import com.jeff.ioc.beans.context.ApplicationContext;
-import com.jeff.ioc.beans.context.ClassPathXmlApplicationContext;
+import com.jeff.ioc.context.ApplicationContext;
+import com.jeff.ioc.context.ClassPathXmlApplicationContext;
 import com.jeff.test.HelloPropertyService;
 import com.jeff.test.HelloService;
 import org.junit.Test;

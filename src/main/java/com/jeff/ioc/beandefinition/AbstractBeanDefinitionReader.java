@@ -1,7 +1,4 @@
-package com.jeff.ioc.beans.beandefinition;
-
-import com.jeff.ioc.beans.beandefinition.BeanDefinition;
-import com.jeff.ioc.beans.beandefinition.BeanDefinitionReader;
+package com.jeff.ioc.beandefinition;
 
 import java.util.HashMap;
 import java.util.Map;

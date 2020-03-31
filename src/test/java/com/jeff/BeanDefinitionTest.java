@@ -1,7 +1,7 @@
 package com.jeff;
 
-import com.jeff.ioc.beans.beandefinition.AbstractBeanDefinitionReader;
-import com.jeff.ioc.beans.beandefinition.XmlBeanDefinitionReader;
+import com.jeff.ioc.beandefinition.AbstractBeanDefinitionReader;
+import com.jeff.ioc.beandefinition.XmlBeanDefinitionReader;
 import org.junit.Test;
 
 public class BeanDefinitionTest {

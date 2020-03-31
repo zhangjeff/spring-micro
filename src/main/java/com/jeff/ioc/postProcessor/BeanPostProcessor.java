@@ -1,4 +1,4 @@
-package com.jeff.ioc.beans.postProcessor;
+package com.jeff.ioc.postProcessor;
 
 public interface BeanPostProcessor {
 

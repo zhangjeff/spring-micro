@@ -1,8 +1,8 @@
-package com.jeff.ioc.beans.context;
+package com.jeff.ioc.context;
 
-import com.jeff.ioc.beans.beandefinition.BeanDefinition;
-import com.jeff.ioc.beans.beandefinition.BeanReference;
-import com.jeff.ioc.beans.beandefinition.PropertyValue;
+import com.jeff.ioc.beandefinition.BeanDefinition;
+import com.jeff.ioc.beandefinition.BeanReference;
+import com.jeff.ioc.beandefinition.PropertyValue;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

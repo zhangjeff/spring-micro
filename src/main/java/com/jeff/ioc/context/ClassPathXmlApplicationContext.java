@@ -1,8 +1,8 @@
-package com.jeff.ioc.beans.context;
+package com.jeff.ioc.context;
 
-import com.jeff.ioc.beans.beandefinition.AbstractBeanDefinitionReader;
-import com.jeff.ioc.beans.beandefinition.BeanDefinition;
-import com.jeff.ioc.beans.beandefinition.XmlBeanDefinitionReader;
+import com.jeff.ioc.beandefinition.XmlBeanDefinitionReader;
+import com.jeff.ioc.beandefinition.AbstractBeanDefinitionReader;
+import com.jeff.ioc.beandefinition.BeanDefinition;
 
 import java.util.Map;
 

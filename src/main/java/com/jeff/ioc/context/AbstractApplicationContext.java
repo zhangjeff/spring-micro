@@ -1,6 +1,6 @@
-package com.jeff.ioc.beans.context;
+package com.jeff.ioc.context;
 
-import com.jeff.ioc.beans.postProcessor.BeanPostProcessor;
+import com.jeff.ioc.postProcessor.BeanPostProcessor;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.jeff.ioc.beans.beandefinition;
+package com.jeff.ioc.beandefinition;
 
 import java.util.ArrayList;
 import java.util.List;
