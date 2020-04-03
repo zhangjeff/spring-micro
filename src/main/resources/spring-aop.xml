@@ -14,9 +14,9 @@
 
     <bean id="autoProxyCreator" class="com.jeff.aop.AspectJAwareAdvisorAutoProxyCreator"></bean>
 
-    <bean id="timeInterceptor" class="us.codecraft.tinyioc.aop.TimerInterceptor"></bean>
+    <bean id="timeInterceptor" class="com.jeff.test.TimerInterceptor"></bean>
 
-    <bean id="aspectjAspect" class="us.codecraft.tinyioc.aop.AspectJExpressionPointcutAdvisor">
+    <bean id="aspectjAspect" class="com.jeff.aop.AspectJExpressionPointcutAdvisor">
         <property name="advice" ref="timeInterceptor"></property>
         <property name="expression" value="execution(* com.jeff.test.*.*(..))"></property>
     </bean>

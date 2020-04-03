@@ -24,18 +24,18 @@ public class AspectJAwareAdvisorAutoProxyCreator implements BeanPostProcessor {
         }
         List<AspectJExpressionPointcutAdvisor> advisors = beanFactory
                 .getBeansForType(AspectJExpressionPointcutAdvisor.class);
-//        for (AspectJExpressionPointcutAdvisor advisor : advisors) {
-//            if (advisor.getPointcut().getClassFilter().matches(bean.getClass())) {
-//                ProxyFactory advisedSupport = new ProxyFactory();
-//                advisedSupport.setMethodInterceptor((MethodInterceptor) advisor.getAdvice());
-//                advisedSupport.setMethodMatcher(advisor.getPointcut().getMethodMatcher());
-//
-//                TargetSource targetSource = new TargetSource(bean, bean.getClass(), bean.getClass().getInterfaces());
-//                advisedSupport.setTargetSource(targetSource);
-//
-//                return advisedSupport.getProxy();
-//            }
-//        }
+        for (AspectJExpressionPointcutAdvisor advisor : advisors) {
+            if (advisor.getPointcut().getClassFilter().matches(bean.getClass())) {
+                ProxyFactory advisedSupport = new ProxyFactory();
+                advisedSupport.setMethodInterceptor((MethodInterceptor) advisor.getAdvice());
+                advisedSupport.setMethodMatcher(advisor.getPointcut().getMethodMatcher());
+
+                TargetSource targetSource = new TargetSource(bean, bean.getClass(), bean.getClass().getInterfaces());
+                advisedSupport.setTargetSource(targetSource);
+
+                return advisedSupport.getProxy();
+            }
+        }
         return bean;
     }
 
