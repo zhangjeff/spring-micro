@@ -4,7 +4,8 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
 /**
- * @author yihua.huang@dianping.com
+ * Jeff
+ * 2020年04月03日15:49:24
  */
 public class TimerInterceptor implements MethodInterceptor {
 

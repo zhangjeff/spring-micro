@@ -1,5 +1,7 @@
 package com.jeff.aop;
 
+import org.aopalliance.intercept.MethodInterceptor;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;

@@ -1,5 +1,6 @@
 package com.jeff.ioc.context;
 
+import com.jeff.aop.BeanFactoryAware;
 import com.jeff.ioc.beandefinition.BeanDefinition;
 import com.jeff.ioc.beandefinition.BeanReference;
 import com.jeff.ioc.beandefinition.PropertyValue;
@@ -11,6 +12,9 @@ public class AutowireCapableBeanFactory extends AbstractBeanFactory {
 
     @Override
     protected void applyPropertyValues(Object bean, BeanDefinition beanDefinition) throws Exception {
+        if (bean instanceof BeanFactoryAware) {
+            ((BeanFactoryAware) bean).setBeanFactory(this);
+        }
         for (PropertyValue propertyValue : beanDefinition.getPropertyValues().getPropertyValues()) {
             Object value = propertyValue.getValue();
             if (value instanceof BeanReference) {

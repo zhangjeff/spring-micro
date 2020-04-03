@@ -1,5 +1,7 @@
 package com.jeff.aop;
 
+import org.aopalliance.aop.Advice;
+
 public class AspectJExpressionPointcutAdvisor implements PointcutAdvisor {
 
     private AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();

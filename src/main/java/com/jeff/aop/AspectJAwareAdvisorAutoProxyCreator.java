@@ -1,11 +1,13 @@
 package com.jeff.aop;
 
 import com.jeff.ioc.context.AbstractBeanFactory;
+import com.jeff.ioc.context.BeanFactory;
 import com.jeff.ioc.postProcessor.BeanPostProcessor;
+import org.aopalliance.intercept.MethodInterceptor;
 
 import java.util.List;
 
-public class AspectJAwareAdvisorAutoProxyCreator implements BeanPostProcessor {
+public class AspectJAwareAdvisorAutoProxyCreator implements BeanPostProcessor, BeanFactoryAware {
 
     private AbstractBeanFactory beanFactory;
 
@@ -39,7 +41,10 @@ public class AspectJAwareAdvisorAutoProxyCreator implements BeanPostProcessor {
         return bean;
     }
 
-    public void setBeanFactory(AbstractBeanFactory beanFactory) {
-        this.beanFactory = beanFactory;
+
+
+    @Override
+    public void setBeanFactory(BeanFactory beanFactory) throws Exception {
+        this.beanFactory = (AbstractBeanFactory)beanFactory;
     }
 }
