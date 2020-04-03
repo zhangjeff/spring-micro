@@ -12,6 +12,5 @@ public class JdkDynamicAopProxyTest {
         System.out.println("---------------");
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-aop.xml");
         HelloService helloWorldService = (HelloService) applicationContext.getBean("helloService");
-
     }
 }
