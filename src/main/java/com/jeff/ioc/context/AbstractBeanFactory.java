@@ -53,6 +53,8 @@ public abstract class AbstractBeanFactory implements BeanFactory {
         bean = initializeBean(bean, name, beanDefinition);
         if ("singleton".equals(beanDefinition.getScope())) {
             singletonObjects.put(name, bean);
+            singletonFactories.remove(beanDefinition.getBeanClass().getSimpleName());
+            singletonsCurrentlyInCreation.remove(name);
         }
         return bean;
     }
