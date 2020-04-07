@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="aService" class="com.jeff.test.cyclicdependency.AServiceImpl">
+        <property name="bService" ref="bService"></property>
+    </bean>
+
+    <bean id="bService" class="com.jeff.test.cyclicdependency.BServiceImpl">
+        <property name="aService" ref="aService"></property>
+    </bean>
+</beans>

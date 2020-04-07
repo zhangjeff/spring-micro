@@ -4,9 +4,7 @@ import com.jeff.ioc.beandefinition.BeanDefinition;
 import com.jeff.ioc.postProcessor.BeanPostProcessor;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class AbstractBeanFactory implements BeanFactory {
@@ -19,24 +17,41 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 
     private final Map<String, Object> singletonObjects = new ConcurrentHashMap<String, Object>(256);
 
+    private final Set<String> singletonsCurrentlyInCreation =
+            Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>(16));
+
+    private final Map<String, Object> earlySingletonObjects = new HashMap<String, Object>(16);
+
+    private final Map<String, BeanFactory> singletonFactories = new HashMap<String, BeanFactory>(16);
+
     @Override
     public Object getBean(String name) throws Exception {
+        BeanDefinition beanDefinition = beanDefinitionMap.get(name);
+        if (beanDefinition == null) {
+            throw new Exception("No bean named " + name + " is defined");
+        }
+
+        if (beanDefinition.getScope() == null || beanDefinition.getScope() == "") {
+            beanDefinition.setScope("singleton");
+        }
+
         Object bean = singletonObjects.get(name);
         if (bean != null) {
             return bean;
         }
 
-        BeanDefinition beanDefinition = beanDefinitionMap.get(name);
-        if (beanDefinition == null) {
-            throw new Exception("No bean named " + name + " is defined");
+        if(singletonsCurrentlyInCreation.contains(name)){
+            bean = singletonFactories.get(beanDefinition.getBeanClass().getSimpleName()).getBean(name);
+            return bean;
         }
-//        bean = beanDefinition.getBean();
-//        if (bean == null) {
+
+        if ("singleton".equals(beanDefinition.getScope())) {
+            singletonsCurrentlyInCreation.add(name);
+        }
+
         bean = doCreateBean(beanDefinition);
         bean = initializeBean(bean, name, beanDefinition);
-//        }
-
-        if (beanDefinition.getScope() == null || beanDefinition.getScope() == "" || "singleton".equals(beanDefinition.getScope())) {
+        if ("singleton".equals(beanDefinition.getScope())) {
             singletonObjects.put(name, bean);
         }
         return bean;
@@ -52,9 +67,41 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 
     protected Object doCreateBean(BeanDefinition beanDefinition) throws Exception {
         Object bean = beanDefinition.getBeanClass().newInstance();
-        beanDefinition.setBean(bean);
+//        beanDefinition.setBean(bean);
+        String beanName = beanDefinition.getBeanClass().getSimpleName();
+        addSingletonFactory(beanName, new BeanFactory() {
+            @Override
+            public Object getBean(String name) throws Exception {
+                return getEarlyBeanReference(name,beanDefinition,bean);
+            }
+        });
         applyPropertyValues(bean, beanDefinition);
         return bean;
+    }
+
+    protected void addSingletonFactory(String beanName, BeanFactory singletonFactory) {
+        synchronized (this.singletonObjects) {
+            if (!this.singletonObjects.containsKey(beanName)) {
+                this.singletonFactories.put(beanName, singletonFactory);
+                this.earlySingletonObjects.remove(beanName);
+            }
+        }
+    }
+
+    protected Object getEarlyBeanReference(String beanName, BeanDefinition mbd, Object bean) {
+        Object exposedObject = bean;
+        if (bean != null) {
+//            for (BeanPostProcessor bp : getBeanPostProcessors()) {
+//                if (bp instanceof SmartInstantiationAwareBeanPostProcessor) {
+//                    SmartInstantiationAwareBeanPostProcessor ibp = (SmartInstantiationAwareBeanPostProcessor) bp;
+//                    exposedObject = ibp.getEarlyBeanReference(exposedObject, beanName);
+//                    if (exposedObject == null) {
+//                        return exposedObject;
+//                    }
+//                }
+//            }
+        }
+        return exposedObject;
     }
 
     public Object initializeBean(Object bean, String name, BeanDefinition beanDefinition) throws Exception {
