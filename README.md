@@ -10,4 +10,5 @@
  ### 7.模仿jdk动态代理
  ### 8.支持enhancer的cglib举例
  ### 9.支持JDK及CGLIB动态代理
+ ### 10.支持spring bean循环依赖
  
