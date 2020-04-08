@@ -41,7 +41,11 @@ public abstract class AbstractBeanFactory implements BeanFactory {
         }
 
         if(singletonsCurrentlyInCreation.contains(name)){
-            bean = singletonFactories.get(beanDefinition.getBeanClass().getSimpleName()).getBean(name);
+            bean = earlySingletonObjects.get(name);
+            if (bean == null) {
+                bean = singletonFactories.get(beanDefinition.getBeanClass().getSimpleName()).getBean(name);
+                earlySingletonObjects.put(name, bean);
+            }
             return bean;
         }
 
