@@ -19,6 +19,9 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 
     public void refresh() throws Exception {
         loadBeanDefinitions(beanFactory);
+
+        prepareBeanFactory(beanFactory);
+
         registerBeanPostProcessors(beanFactory);
 
         finishBeanFactoryInitialization(beanFactory);
@@ -35,5 +38,9 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
     //实例化单例模式的bean
     public void finishBeanFactoryInitialization(AbstractBeanFactory beanFactory) throws Exception {
         beanFactory.preInstantiateSingletons();
+    }
+
+    protected void prepareBeanFactory(AbstractBeanFactory beanFactory) throws Exception{
+        beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
     }
 }
