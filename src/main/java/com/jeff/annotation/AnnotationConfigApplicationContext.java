@@ -1,5 +1,6 @@
 package com.jeff.annotation;
 
+import com.jeff.ioc.beandefinition.BeanDefinition;
 import com.jeff.ioc.context.AbstractBeanFactory;
 
 public class AnnotationConfigApplicationContext extends GenericApplicationContext implements AnnotationConfigRegistry {
@@ -8,7 +9,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 
     @Override
     public void register(Class<?>... annotatedClasses) {
-
+        reader.register(annotatedClasses);
     }
 
     @Override
@@ -29,5 +30,12 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
         this();
         scan(basePackages);
         refresh();
+    }
+
+    @Override
+    protected void loadBeanDefinitions(AbstractBeanFactory beanFactory) throws Exception {
+
+        BeanDefinitionHolder beanDefinitionHolder = reader.getBeanDefinitionHolder();
+        beanFactory.registerBeanDefinition(beanDefinitionHolder.getBeanName(), beanDefinitionHolder.getBeanDefinition());
     }
 }
