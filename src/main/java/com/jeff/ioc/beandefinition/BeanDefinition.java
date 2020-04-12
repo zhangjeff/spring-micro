@@ -25,4 +25,8 @@ public class BeanDefinition {
             e.printStackTrace();
         }
     }
+
+//    public String getBeanClassName(){
+//        return beanClassName;
+//    }
 }

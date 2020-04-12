@@ -1,13 +1,14 @@
 package com.jeff.annotation;
 
 import com.jeff.annotation.stereotype.AnnotationMetadata;
-import com.jeff.annotation.stereotype.StandardAnnotationMetadata;
-import com.jeff.ioc.beandefinition.BeanDefinition;
+import java.util.HashSet;
+import java.util.Set;
 
 public class AnnotatedBeanDefinitionReader {
 //    private Annotation[] annotations;
 
-    private BeanDefinitionHolder beanDefinitionHolder;
+
+    private Set<BeanDefinitionHolder> beanDefinitionHolder;
 
     private AnnotationMetadata metadata;
 
@@ -21,17 +22,19 @@ public class AnnotatedBeanDefinitionReader {
 //        annotations = annotatedClass.getAnnotations();
         AnnotatedGenericBeanDefinition bcd = new AnnotatedGenericBeanDefinition(annotatedClass);
 //        metadata = new StandardAnnotationMetadata(annotatedClass);
-        beanDefinitionHolder = new BeanDefinitionHolder(bcd.getBeanClass().getSimpleName(), bcd);
+        beanDefinitionHolder = new HashSet<>();
+        beanDefinitionHolder.add(new BeanDefinitionHolder(bcd.getBeanClass().getSimpleName(), bcd));
     }
 
     public void registerBeanDefinition(AnnotationMetadata metadata){
 
     }
-    public BeanDefinitionHolder getBeanDefinitionHolder() {
+    public Set<BeanDefinitionHolder> getBeanDefinitionHolder() {
         return beanDefinitionHolder;
     }
 
-    public void setBeanDefinitionHolder(BeanDefinitionHolder beanDefinitionHolder) {
+    public void setBeanDefinitionHolder(Set<BeanDefinitionHolder> beanDefinitionHolder) {
         this.beanDefinitionHolder = beanDefinitionHolder;
     }
+
 }
