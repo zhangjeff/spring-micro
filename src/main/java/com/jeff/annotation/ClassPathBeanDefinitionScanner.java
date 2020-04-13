@@ -19,7 +19,7 @@ import java.net.URL;
 import java.util.*;
 
 public class ClassPathBeanDefinitionScanner {
-    static final String DEFAULT_RESOURCE_PATTERN = "**/*.class";
+    final String DEFAULT_RESOURCE_PATTERN = "**/*.class";
 
     String CLASSPATH_ALL_URL_PREFIX = "classpath*:";
 
