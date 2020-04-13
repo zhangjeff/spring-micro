@@ -12,5 +12,5 @@
  ### 9.支持JDK及CGLIB动态代理
  ### 10.支持spring bean循环依赖
  ### 11.支持aware接口 当bean继承接口ApplicationContextAware的时候，bean是可以拿到applicationContext
-         
+ ### 12.支持annotation的实现方式       
  

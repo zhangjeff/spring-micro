@@ -1,6 +1,7 @@
 package com.jeff.annotation;
 
 import com.jeff.annotation.resource.ResourcePatternResolver;
+import com.jeff.annotation.stereotype.Component;
 import com.jeff.ioc.beandefinition.BeanDefinition;
 import com.jeff.util.*;
 import org.springframework.core.io.Resource;
@@ -9,6 +10,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
+import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.core.type.filter.TypeFilter;
 
 import java.io.File;
@@ -37,6 +39,7 @@ public class ClassPathBeanDefinitionScanner {
 //    private ConditionEvaluator conditionEvaluator;
 
     public ClassPathBeanDefinitionScanner() {
+        this.includeFilters.add(new AnnotationTypeFilter(Component.class));
     }
 
     public Set<BeanDefinitionHolder> scan(String... basePackages) throws Exception{
@@ -96,14 +99,14 @@ public class ClassPathBeanDefinitionScanner {
                 if (resource.isReadable()) {
                     try {
                         MetadataReader metadataReader = this.metadataReaderFactory.getMetadataReader(resource);
-//                        if (isCandidateComponent(metadataReader)) {
+                        if (isCandidateComponent(metadataReader)) {
                             ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
                             sbd.setResource(resource);
                             sbd.setSource(resource);
 //                            if (isCandidateComponent(sbd)) {
                             candidates.add(sbd);
 //                            }
-//                        }
+                        }
                     } catch (Throwable ex) {
                         throw new Exception(
                                 "Failed to read candidate component class: " + resource, ex);
@@ -116,28 +119,29 @@ public class ClassPathBeanDefinitionScanner {
         return candidates;
     }
 
-//    protected boolean isCandidateComponent(MetadataReader metadataReader) throws IOException {
-//        for (TypeFilter tf : this.excludeFilters) {
-//            if (tf.match(metadataReader, this.metadataReaderFactory)) {
-//                return false;
-//            }
-//        }
-//        for (TypeFilter tf : this.includeFilters) {
-//            if (tf.match(metadataReader, this.metadataReaderFactory)) {
+    protected boolean isCandidateComponent(MetadataReader metadataReader) throws IOException {
+        for (TypeFilter tf : this.excludeFilters) {
+            if (tf.match(metadataReader, this.metadataReaderFactory)) {
+                return false;
+            }
+        }
+        for (TypeFilter tf : this.includeFilters) {
+            if (tf.match(metadataReader, this.metadataReaderFactory)) {
 //                return isConditionMatch(metadataReader);
-//            }
-//        }
-//        return false;
-//    }
+                return true;
+            }
+        }
+        return false;
+    }
 
 
-    private boolean isConditionMatch(MetadataReader metadataReader) {
+//    private boolean isConditionMatch(MetadataReader metadataReader) {
 //        if (this.conditionEvaluator == null) {
 //            this.conditionEvaluator = new ConditionEvaluator(getRegistry(), getEnvironment(), getResourceLoader());
 //        }
 //        return !this.conditionEvaluator.shouldSkip(metadataReader.getAnnotationMetadata());
-        return false;
-    }
+//        return false;
+//    }
 
     protected String resolveBasePackage(String basePackage){
        return basePackage.replace(".", "/");

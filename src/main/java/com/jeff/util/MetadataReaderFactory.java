@@ -1,6 +1,5 @@
 package com.jeff.util;
 
-import com.sun.xml.internal.ws.api.databinding.MetadataReader;
 import org.springframework.core.io.Resource;
 
 import java.io.IOException;
