@@ -147,27 +147,22 @@ public class ClassPathBeanDefinitionScanner {
        return basePackage.replace(".", "/");
     }
 
+    public boolean isPattern(String path) {
+        return (path.indexOf('*') != -1 || path.indexOf('?') != -1);
+    }
+
     public Resource[] getResources(String locationPattern) throws IOException {
         if (locationPattern.startsWith(CLASSPATH_ALL_URL_PREFIX)) {
             // a class path resource (multiple resources for same name possible)
-            if (getPathMatcher().isPattern(locationPattern.substring(CLASSPATH_ALL_URL_PREFIX.length()))) {
+            if (isPattern(locationPattern.substring(CLASSPATH_ALL_URL_PREFIX.length()))) {
                 // a class path resource pattern
                 return findPathMatchingResources(locationPattern);
-            }
-            else {
+            } else {
                 // all class path resources with the given name
                 return findAllClassPathResources(locationPattern.substring(CLASSPATH_ALL_URL_PREFIX.length()));
             }
-        } else {
-            int prefixEnd = locationPattern.indexOf(":") + 1;
-            if (getPathMatcher().isPattern(locationPattern.substring(prefixEnd))) {
-                return findPathMatchingResources(locationPattern);
-            }
-//            else {
-//                return new Resource[] {getResourceLoader().getResource(locationPattern)};
-//            }
-            return null;
         }
+        return  null;
     }
 
     protected Resource[] findPathMatchingResources(String locationPattern) throws IOException {
@@ -190,7 +185,7 @@ public class ClassPathBeanDefinitionScanner {
     protected String determineRootDir(String location) {
         int prefixEnd = location.indexOf(":") + 1;
         int rootDirEnd = location.length();
-        while (rootDirEnd > prefixEnd && getPathMatcher().isPattern(location.substring(prefixEnd, rootDirEnd))) {
+        while (rootDirEnd > prefixEnd && isPattern(location.substring(prefixEnd, rootDirEnd))) {
             rootDirEnd = location.lastIndexOf('/', rootDirEnd - 2) + 1;
         }
         if (rootDirEnd == 0) {

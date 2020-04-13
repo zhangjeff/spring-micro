@@ -22,7 +22,7 @@ public class AnnotatedBeanDefinitionReader {
 //        annotations = annotatedClass.getAnnotations();
         AnnotatedGenericBeanDefinition bcd = new AnnotatedGenericBeanDefinition(annotatedClass);
 //        metadata = new StandardAnnotationMetadata(annotatedClass);
-        beanDefinitionHolder = new HashSet<>();
+        beanDefinitionHolder = new HashSet();
         beanDefinitionHolder.add(new BeanDefinitionHolder(bcd.getBeanClass().getSimpleName(), bcd));
     }
 
