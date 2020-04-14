@@ -1,6 +1,5 @@
 package com.jeff.annotation;
 
-import com.jeff.annotation.resource.ResourcePatternResolver;
 import com.jeff.annotation.stereotype.Component;
 import com.jeff.ioc.beandefinition.BeanDefinition;
 import com.jeff.util.*;
@@ -8,18 +7,13 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springframework.core.type.classreading.AnnotationMetadataReadingVisitor;
 import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
-import org.springframework.core.type.filter.AnnotationTypeFilter;
-import org.springframework.core.type.filter.TypeFilter;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -32,7 +26,7 @@ public class ClassPathBeanDefinitionScanner {
 
     private final Class<? extends Annotation> annotationType = Component.class;
 
-    private AnnotatedGenericBeanDefinition annotatedGenericBeanDefinition;
+//    private AnnotatedGenericBeanDefinition annotatedGenericBeanDefinition;
 
     private org.springframework.core.io.support.ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 
@@ -98,7 +92,7 @@ public class ClassPathBeanDefinitionScanner {
     public Set<BeanDefinition> findCandidateComponents(String basePackage) throws Exception {
         Set<BeanDefinition> candidates = new LinkedHashSet();
         try {
-            String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
+            String packageSearchPath = CLASSPATH_ALL_URL_PREFIX +
                     resolveBasePackage(basePackage) + "/" + this.DEFAULT_RESOURCE_PATTERN;
             Resource[] resources = getResources(packageSearchPath);
 //            List<Resource> resources = new ArrayList(urls.length);
