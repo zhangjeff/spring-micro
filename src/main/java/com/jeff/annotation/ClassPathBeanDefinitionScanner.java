@@ -183,11 +183,6 @@ public class ClassPathBeanDefinitionScanner {
         return result.toArray(new Resource[result.size()]);
     }
 
-//    protected Resource doFindPathMatchingFileResources(Resource rootDirResource, String subPattern) {
-//        return new Resource() {
-//        };
-//    }
-
     protected String determineRootDir(String location) {
         int prefixEnd = location.indexOf(":") + 1;
         int rootDirEnd = location.length();
