@@ -7,6 +7,8 @@ import com.jeff.util.*;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.core.type.classreading.AnnotationMetadataReadingVisitor;
 import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
@@ -15,6 +17,7 @@ import org.springframework.core.type.filter.TypeFilter;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.net.URI;
@@ -27,13 +30,15 @@ public class ClassPathBeanDefinitionScanner {
 
     String CLASSPATH_ALL_URL_PREFIX = "classpath*:";
 
+    private final Class<? extends Annotation> annotationType = Component.class;
+
     private AnnotatedGenericBeanDefinition annotatedGenericBeanDefinition;
 
     private org.springframework.core.io.support.ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 
-    private final List<TypeFilter> includeFilters = new LinkedList<TypeFilter>();
-
-    private final List<TypeFilter> excludeFilters = new LinkedList<TypeFilter>();
+//    private final List<TypeFilter> includeFilters = new LinkedList<TypeFilter>();
+//
+//    private final List<TypeFilter> excludeFilters = new LinkedList<TypeFilter>();
 
     private MetadataReaderFactory metadataReaderFactory =
             new CachingMetadataReaderFactory(this.resourcePatternResolver);
@@ -41,7 +46,7 @@ public class ClassPathBeanDefinitionScanner {
 //    private ConditionEvaluator conditionEvaluator;
 
     public ClassPathBeanDefinitionScanner() {
-        this.includeFilters.add(new AnnotationTypeFilter(Component.class));
+//        this.includeFilters.add(new AnnotationTypeFilter(Component.class));
     }
 
     public Set<BeanDefinitionHolder> scan(String... basePackages) throws Exception{
@@ -91,7 +96,7 @@ public class ClassPathBeanDefinitionScanner {
     }
 
     public Set<BeanDefinition> findCandidateComponents(String basePackage) throws Exception {
-        Set<BeanDefinition> candidates = new LinkedHashSet<BeanDefinition>();
+        Set<BeanDefinition> candidates = new LinkedHashSet();
         try {
             String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
                     resolveBasePackage(basePackage) + "/" + this.DEFAULT_RESOURCE_PATTERN;
@@ -125,19 +130,13 @@ public class ClassPathBeanDefinitionScanner {
         return candidates;
     }
 
-    protected boolean isCandidateComponent(MetadataReader metadataReader) throws IOException {
-        for (TypeFilter tf : this.excludeFilters) {
-            if (tf.match(metadataReader, this.metadataReaderFactory)) {
-                return false;
-            }
-        }
-        for (TypeFilter tf : this.includeFilters) {
-            if (tf.match(metadataReader, this.metadataReaderFactory)) {
-//                return isConditionMatch(metadataReader);
-                return true;
-            }
-        }
-        return false;
+//    protected boolean isCandidateComponent(MetadataReader metadataReader) throws IOException {
+//        return matchSelf(metadataReader);
+//    }
+
+    protected boolean isCandidateComponent(MetadataReader metadataReader) {
+        AnnotationMetadata metadata = metadataReader.getAnnotationMetadata();
+        return metadata.hasAnnotation(this.annotationType.getName()) ;
     }
 
 
@@ -175,7 +174,7 @@ public class ClassPathBeanDefinitionScanner {
         String rootDirPath = determineRootDir(locationPattern);
         String subPattern = locationPattern.substring(rootDirPath.length());
         Resource[] rootDirResources = getResources(rootDirPath);
-        Set<Resource> result = new LinkedHashSet<Resource>(16);
+        Set<Resource> result = new LinkedHashSet(16);
         for (Resource rootDirResource : rootDirResources) {
 //            rootDirResource = resolveRootDirResource(rootDirResource);
             result.addAll(doFindPathMatchingFileResources(rootDirResource.getURL(), subPattern));
@@ -262,7 +261,6 @@ public class ClassPathBeanDefinitionScanner {
     }
 
     protected void doRetrieveMatchingFiles(String fullPattern, File dir, Set<File> result) throws IOException {
-
         File[] dirContents = dir.listFiles();
         if (dirContents == null) {
 
@@ -284,7 +282,6 @@ public class ClassPathBeanDefinitionScanner {
         }
     }
 
-
     protected Set<Resource> doFindAllClassPathResources(String path) throws IOException {
         Set<Resource> result = new LinkedHashSet<>(16);
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
@@ -293,22 +290,6 @@ public class ClassPathBeanDefinitionScanner {
             URL url = resourceUrls.nextElement();
             result.add(new UrlResource(url));
         }
-//        if ("".equals(path)) {
-//            // The above result is likely to be incomplete, i.e. only containing file system references.
-//            // We need to have pointers to each of the jar files on the classpath as well...
-//            addAllClassLoaderJarRoots(cl, result);
-//        }
         return result;
-    }
-
-//    protected Resource convertClassLoaderURL(URL url) {
-//        return new UrlResource(url);
-//    }
-
-    public static void main(String[] args) throws Exception{
-        ClassPathBeanDefinitionScanner classPathBeanDefinitionScanner = new ClassPathBeanDefinitionScanner();
-//        classPathBeanDefinitionScanner.doScan("com.jeff.test.annotation");
-        classPathBeanDefinitionScanner.findCandidateComponents("com.jeff.test.annotation");
-
     }
 }
