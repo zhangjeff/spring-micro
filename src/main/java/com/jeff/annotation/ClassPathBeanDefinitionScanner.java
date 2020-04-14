@@ -17,6 +17,8 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 
@@ -94,7 +96,11 @@ public class ClassPathBeanDefinitionScanner {
             String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
                     resolveBasePackage(basePackage) + "/" + this.DEFAULT_RESOURCE_PATTERN;
             Resource[] resources = getResources(packageSearchPath);
-
+//            List<Resource> resources = new ArrayList(urls.length);
+//            for (URL url : urls) {
+//                Resource resource = new UrlResource(url);
+//                resources.add(resource);
+//            }
             for (Resource resource : resources) {
                 if (resource.isReadable()) {
                     try {
@@ -172,7 +178,7 @@ public class ClassPathBeanDefinitionScanner {
         Set<Resource> result = new LinkedHashSet<Resource>(16);
         for (Resource rootDirResource : rootDirResources) {
 //            rootDirResource = resolveRootDirResource(rootDirResource);
-            result.addAll(doFindPathMatchingFileResources(rootDirResource, subPattern));
+            result.addAll(doFindPathMatchingFileResources(rootDirResource.getURL(), subPattern));
         }
         return result.toArray(new Resource[result.size()]);
     }
@@ -208,17 +214,22 @@ public class ClassPathBeanDefinitionScanner {
         return new AntPathMatcher();
     }
 
-    protected Set<Resource> doFindPathMatchingFileResources(Resource rootDirResource, String subPattern)
+    protected Set<Resource> doFindPathMatchingFileResources(URL rootDirResource, String subPattern)
             throws IOException {
 
         File rootDir;
         try {
-            rootDir = rootDirResource.getFile().getAbsoluteFile();
+            rootDir = new File(toURI(rootDirResource.toString()).getSchemeSpecificPart()).getAbsoluteFile();
+//            rootDir =  new File(toURI(rootDirResource.toString()).).getFile().getAbsoluteFile();
         }
-        catch (IOException ex) {
+        catch (Exception ex) {
             return Collections.emptySet();
         }
         return doFindMatchingFileSystemResources(rootDir, subPattern);
+    }
+
+    public URI toURI(String location) throws URISyntaxException {
+        return new URI(org.springframework.util.StringUtils.replace(location, " ", "%20"));
     }
 
     protected Set<Resource> doFindMatchingFileSystemResources(File rootDir, String subPattern) throws IOException {
@@ -280,12 +291,12 @@ public class ClassPathBeanDefinitionScanner {
 
 
     protected Set<Resource> doFindAllClassPathResources(String path) throws IOException {
-        Set<Resource> result = new LinkedHashSet<Resource>(16);
+        Set<Resource> result = new LinkedHashSet<>(16);
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
         Enumeration<URL> resourceUrls = (cl != null ? cl.getResources(path) : ClassLoader.getSystemResources(path));
         while (resourceUrls.hasMoreElements()) {
             URL url = resourceUrls.nextElement();
-            result.add(convertClassLoaderURL(url));
+            result.add(new UrlResource(url));
         }
 //        if ("".equals(path)) {
 //            // The above result is likely to be incomplete, i.e. only containing file system references.
@@ -295,9 +306,9 @@ public class ClassPathBeanDefinitionScanner {
         return result;
     }
 
-    protected Resource convertClassLoaderURL(URL url) {
-        return new UrlResource(url);
-    }
+//    protected Resource convertClassLoaderURL(URL url) {
+//        return new UrlResource(url);
+//    }
 
     public static void main(String[] args) throws Exception{
         ClassPathBeanDefinitionScanner classPathBeanDefinitionScanner = new ClassPathBeanDefinitionScanner();
