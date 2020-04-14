@@ -3,16 +3,20 @@ package com.jeff.annotation;
 import com.jeff.annotation.stereotype.Component;
 import com.jeff.ioc.beandefinition.BeanDefinition;
 import com.jeff.util.*;
+import org.springframework.asm.ClassReader;
+import org.springframework.core.NestedIOException;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.core.type.classreading.AnnotationMetadataReadingVisitor;
 import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
-import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -103,11 +107,12 @@ public class ClassPathBeanDefinitionScanner {
             for (Resource resource : resources) {
                 if (resource.isReadable()) {
                     try {
-                        MetadataReader metadataReader = this.metadataReaderFactory.getMetadataReader(resource);
+                        MetadataReader metadataReader = new SimpleMetadataReaderFactory().getMetadataReader(resource);
+//                        MetadataReader metadataReader = this.metadataReaderFactory.getMetadataReader(resource);
                         if (isCandidateComponent(metadataReader)) {
                             ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
-                            sbd.setResource(resource);
-                            sbd.setSource(resource);
+//                            sbd.setResource(resource);
+//                            sbd.setSource(resource);
 //                            if (isCandidateComponent(sbd)) {
                             candidates.add(sbd);
 //                            }
