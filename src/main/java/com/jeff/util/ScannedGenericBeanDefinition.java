@@ -6,6 +6,7 @@ import com.jeff.ioc.beandefinition.BeanDefinition;
 import org.springframework.core.io.Resource;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.MethodMetadata;
+import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.util.Assert;
 
 

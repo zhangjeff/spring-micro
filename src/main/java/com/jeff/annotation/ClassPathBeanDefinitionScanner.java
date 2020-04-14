@@ -3,9 +3,14 @@ package com.jeff.annotation;
 import com.jeff.annotation.stereotype.Component;
 import com.jeff.ioc.beandefinition.BeanDefinition;
 import com.jeff.util.*;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.core.type.classreading.MetadataReader;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.PathMatcher;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,21 +30,7 @@ public class ClassPathBeanDefinitionScanner {
 
     private final Class<? extends Annotation> annotationType = Component.class;
 
-//    private AnnotatedGenericBeanDefinition annotatedGenericBeanDefinition;
-
-//    private org.springframework.core.io.support.ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
-
-//    private final List<TypeFilter> includeFilters = new LinkedList<TypeFilter>();
-//
-//    private final List<TypeFilter> excludeFilters = new LinkedList<TypeFilter>();
-
-//    private MetadataReaderFactory metadataReaderFactory =
-//            new CachingMetadataReaderFactory(this.resourcePatternResolver);
-
-//    private ConditionEvaluator conditionEvaluator;
-
     public ClassPathBeanDefinitionScanner() {
-//        this.includeFilters.add(new AnnotationTypeFilter(Component.class));
     }
 
     public Set<BeanDefinitionHolder> scan(String... basePackages) throws Exception{
@@ -52,24 +43,9 @@ public class ClassPathBeanDefinitionScanner {
         for (String basePackage : basePackages) {
             Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
             for (BeanDefinition candidate : candidates) {
-//                ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(candidate);
-//                candidate.setScope(scopeMetadata.getScopeName());
-//                String beanName = this.beanNameGenerator.generateBeanName(candidate, this.registry);
                 String beanName = decapitalize(ClassUtils.getShortName(candidate.getBeanClassName()));
-//
-//                if (candidate instanceof AbstractBeanDefinition) {
-//                    postProcessBeanDefinition((AbstractBeanDefinition) candidate, beanName);
-//                }
-//                if (candidate instanceof AnnotatedBeanDefinition) {
-//                    AnnotationConfigUtils.processCommonDefinitionAnnotations((AnnotatedBeanDefinition) candidate);
-//                }
-//                if (checkCandidate(beanName, candidate)) {
                 BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(beanName, candidate);
-//                definitionHolder = AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
-//                    beanDefinitions.add(definitionHolder);
                 beanDefinitions.add(definitionHolder);
-//                registerBeanDefinition(definitionHolder, this.registry);
-//                }
             }
         }
         return beanDefinitions;
@@ -124,23 +100,10 @@ public class ClassPathBeanDefinitionScanner {
         return candidates;
     }
 
-//    protected boolean isCandidateComponent(MetadataReader metadataReader) throws IOException {
-//        return matchSelf(metadataReader);
-//    }
-
     protected boolean isCandidateComponent(MetadataReader metadataReader) {
         AnnotationMetadata metadata = metadataReader.getAnnotationMetadata();
         return metadata.hasAnnotation(this.annotationType.getName()) ;
     }
-
-
-//    private boolean isConditionMatch(MetadataReader metadataReader) {
-//        if (this.conditionEvaluator == null) {
-//            this.conditionEvaluator = new ConditionEvaluator(getRegistry(), getEnvironment(), getResourceLoader());
-//        }
-//        return !this.conditionEvaluator.shouldSkip(metadataReader.getAnnotationMetadata());
-//        return false;
-//    }
 
     protected String resolveBasePackage(String basePackage){
        return basePackage.replace(".", "/");
