@@ -50,7 +50,7 @@ public class ClassPathBeanDefinitionScanner {
     }
 
     protected Set<BeanDefinitionHolder> doScan(String... basePackages) throws Exception{
-        Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<BeanDefinitionHolder>();
+        Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet();
         for (String basePackage : basePackages) {
             Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
             for (BeanDefinition candidate : candidates) {
