@@ -55,9 +55,9 @@ public class DefaultResourceLoader implements ResourceLoader {
 		if (location.startsWith("/")) {
 //			return getResourceByPath(location);
 		}
-		else if (location.startsWith(CLASSPATH_URL_PREFIX)) {
-			return new ClassPathResource(location.substring(CLASSPATH_URL_PREFIX.length()), getClassLoader());
-		}
+//		else if (location.startsWith(CLASSPATH_URL_PREFIX)) {
+//			return new ClassPathResource(location.substring(CLASSPATH_URL_PREFIX.length()), getClassLoader());
+//		}
 		else {
 			try {
 				// Try to parse the location as a URL...

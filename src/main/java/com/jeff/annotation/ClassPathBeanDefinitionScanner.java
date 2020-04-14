@@ -3,25 +3,20 @@ package com.jeff.annotation;
 import com.jeff.annotation.stereotype.Component;
 import com.jeff.ioc.beandefinition.BeanDefinition;
 import com.jeff.util.*;
-import org.springframework.asm.ClassReader;
-import org.springframework.core.NestedIOException;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springframework.core.type.classreading.AnnotationMetadataReadingVisitor;
-import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
-import org.springframework.core.type.classreading.MetadataReaderFactory;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.*;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class ClassPathBeanDefinitionScanner {
     final String DEFAULT_RESOURCE_PATTERN = "**/*.class";
@@ -32,14 +27,14 @@ public class ClassPathBeanDefinitionScanner {
 
 //    private AnnotatedGenericBeanDefinition annotatedGenericBeanDefinition;
 
-    private org.springframework.core.io.support.ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
+//    private org.springframework.core.io.support.ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 
 //    private final List<TypeFilter> includeFilters = new LinkedList<TypeFilter>();
 //
 //    private final List<TypeFilter> excludeFilters = new LinkedList<TypeFilter>();
 
-    private MetadataReaderFactory metadataReaderFactory =
-            new CachingMetadataReaderFactory(this.resourcePatternResolver);
+//    private MetadataReaderFactory metadataReaderFactory =
+//            new CachingMetadataReaderFactory(this.resourcePatternResolver);
 
 //    private ConditionEvaluator conditionEvaluator;
 
