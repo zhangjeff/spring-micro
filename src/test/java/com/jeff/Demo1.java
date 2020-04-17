@@ -14,6 +14,13 @@ public class Demo1 {
 //        System.out.println(demo1.b);
         System.out.println(StaticTest.aa);
         System.out.println(StaticTest2.bb);
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            System.out.println("33333333");
+        }
     }
 }
 //  -XX:+TraceClassLoading
