@@ -36,11 +36,11 @@ public abstract class AbstractBeanFactory implements BeanFactory {
         }
 
         Object bean = singletonObjects.get(name);
-        if (bean != null) {
+        if (bean != null && !(bean instanceof FactoryBean)) {
             return bean;
         }
 
-        if(singletonsCurrentlyInCreation.contains(name)){
+        if (singletonsCurrentlyInCreation.contains(name)) {
             bean = earlySingletonObjects.get(name);
             if (bean == null) {
                 bean = singletonFactories.get(beanDefinition.getBeanClass().getSimpleName()).getBean(name);
@@ -60,7 +60,17 @@ public abstract class AbstractBeanFactory implements BeanFactory {
             singletonFactories.remove(beanDefinition.getBeanClass().getSimpleName());
             singletonsCurrentlyInCreation.remove(name);
         }
+
+        bean = getObjectForBeanInstance(bean, name);
         return bean;
+    }
+
+    protected Object getObjectForBeanInstance(
+            Object beanInstance, String name) {
+        if (!(beanInstance instanceof FactoryBean) || (name != null && name.startsWith("&"))) {
+            return beanInstance;
+        }
+        return ((FactoryBean) beanInstance).getObject();
     }
 
     public void registerBeanDefinition(String name, BeanDefinition beanDefinition) {
@@ -78,7 +88,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
         addSingletonFactory(beanName, new BeanFactory() {
             @Override
             public Object getBean(String name) throws Exception {
-                return getEarlyBeanReference(name,beanDefinition,bean);
+                return getEarlyBeanReference(name, beanDefinition, bean);
             }
         });
         applyPropertyValues(bean, beanDefinition);
