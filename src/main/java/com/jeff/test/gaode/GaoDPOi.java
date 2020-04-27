@@ -11,8 +11,12 @@ import org.apache.http.util.EntityUtils;
 public class GaoDPOi {
 
     public static void main(String[] args) throws Exception {
-        generateData("116.473168,39.993015", "美食");
-        generateData("116.473168,39.993015", "美食");
+        generateData("121.4911219,31.26247455", "美食");
+//        generateData("121.471031,31.231657", "购物中心");
+//        generateData("121.4911219,31.26247455", "办公楼");
+//        generateData("121.471031,31.231657", "教育培训类");
+//        generateData("121.471031,31.231657", "住宅类");
+
     }
 
     public static void  generateData(String location, String keywords) throws Exception{
@@ -29,15 +33,15 @@ public class GaoDPOi {
         String objString = EntityUtils.toString(entity, "utf-8");
         ShopInfo shopInfo = JSON.parseObject(objString, ShopInfo.class);
 //        System.out.println(objString);
-        //关闭httpclient
+//        关闭httpclient
 //        System.out.println(shopInfo);
-        String line = "坐标(" + location +"), 数量---" + shopInfo.getCount();
+        String line = "坐标(" + location +"),关键字:" + keywords +"， 数量---" + shopInfo.getCount();
         System.out.println(line);
-//        for (Poi poi : shopInfo.getPois()) {
-//            String line = "坐标("+ location +"),数量："+shopInfo.getCount() + ",名称:" + poi.getName() + ",地址：" + poi.getAddress()
-//                    +",城市："+poi.getCityname();
-//            System.out.println(line);
-//        }
+        for (Poi poi : shopInfo.getPois()) {
+            String linel = "坐标("+ location +"),数量："+shopInfo.getCount() + ",名称:" + poi.getName() + ",地址：" + poi.getAddress()
+                    +",城市："+poi.getCityname();
+            System.out.println(linel);
+        }
 
         response.close();
         httpClient.close();
