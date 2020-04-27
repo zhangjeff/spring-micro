@@ -1,5 +1,6 @@
 package com.jeff.test.gaode;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -25,9 +26,11 @@ public class GaoDPOi {
         int statusCode = response.getStatusLine().getStatusCode();
         System.out.println(statusCode);
         HttpEntity entity = response.getEntity();
-        String string = EntityUtils.toString(entity, "utf-8");
-        System.out.println(string);
+        String objString = EntityUtils.toString(entity, "utf-8");
+        ShopInfo shopInfo = JSON.parseObject(objString, ShopInfo.class);
+        System.out.println(objString);
         //关闭httpclient
+        System.out.println(shopInfo);
         response.close();
         httpClient.close();
     }
