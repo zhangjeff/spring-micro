@@ -1,5 +1,7 @@
 package com.jeff.aop;
 
+import com.jeff.classload.ClassLoaderTest;
+
 import javax.tools.JavaCompiler;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
@@ -72,8 +74,11 @@ public class ProxyUtil {
         t.call();
         fileMgr.close();
         URL url = file.toURI().toURL();
-        URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{url});
-        Class clazz = urlClassLoader.loadClass("com.jeff.aop.$Proxy");
+//        URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{url});
+//        Class clazz = urlClassLoader.loadClass("com.jeff.aop.$Proxy");
+//        Class clazz = Thread.currentThread().getContextClassLoader().loadClass("com.jeff.aop.$Proxy");
+        MyClassLoader myClassLoader = new MyClassLoader();
+        Class clazz = myClassLoader.loadClass("com.jeff.aop.$Proxy");
         Constructor constructor = clazz.getConstructor(targetInfo);
         Object obj = constructor.newInstance(target);
         return obj;
