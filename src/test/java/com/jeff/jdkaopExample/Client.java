@@ -11,13 +11,13 @@ public class Client {
         Subject subject = (Subject) Proxy.newProxyInstance(handler.getClass().getClassLoader(), realSubject
                 .getClass().getInterfaces(), handler);
 
-        System.out.println(subject.getClass().getName());
+//        System.out.println(subject.getClass().getName());
 
-        for (Class<?> interfaceType : subject.getClass().getInterfaces()) {
-            System.out.println("- " + interfaceType);
-        }
+//        for (Class<?> interfaceType : subject.getClass().getInterfaces()) {
+//            System.out.println("- " + interfaceType);
+//        }
 
 
-        subject.rent();
+        subject.rent().hello("333333");
     }
 }

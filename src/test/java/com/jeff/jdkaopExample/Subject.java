@@ -2,8 +2,8 @@ package com.jeff.jdkaopExample;
 
 public interface Subject {
 
-    void rent();
+    Subject rent();
 
-    void hello(String str);
+    Subject hello(String str);
 
 }
