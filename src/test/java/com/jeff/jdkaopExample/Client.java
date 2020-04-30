@@ -12,6 +12,12 @@ public class Client {
                 .getClass().getInterfaces(), handler);
 
         System.out.println(subject.getClass().getName());
+
+        for (Class<?> interfaceType : subject.getClass().getInterfaces()) {
+            System.out.println("- " + interfaceType);
+        }
+
+
         subject.rent();
     }
 }
